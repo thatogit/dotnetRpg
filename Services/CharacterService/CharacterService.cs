@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -45,8 +46,10 @@ namespace dotnetRpg.Services.CharacterService
 
         public async Task<ServiceResponse<GetCharacterDto>> UpdateCharacter(UpdateCharacterDto updateCharacter)
         {
-            var ServiceResponse = new ServiceResponse<GetCharacterDto>();
+            var serviceResponse = new ServiceResponse<GetCharacterDto>();
 
+            try
+            {
             Character character = characters.FirstOrDefault(c => c.Id ==updateCharacter.Id);
 
             character.Name = updateCharacter.Name;
@@ -56,10 +59,35 @@ namespace dotnetRpg.Services.CharacterService
             character.Intelligence = updateCharacter.Intelligence;
             character.Class =character.Class;
 
-            ServiceResponse.Data =_mapper.Map<GetCharacterDto>(character);
+            serviceResponse.Data =_mapper.Map<GetCharacterDto>(character);
+            }
+            catch(Exception ex )
+            {
+              serviceResponse.Success = false;
+              serviceResponse.Message = ex.Message;  
+            }
 
-            return ServiceResponse;
+            return serviceResponse;
 
+        }
+        
+        public async Task<ServiceResponse<List<GetCharacterDto>>> DeleteCharacter(int id)
+        {
+            var serviceResponse = new ServiceResponse<List<GetCharacterDto>>();
+
+            try
+            {
+            Character character = characters.First(c => c.Id ==id);
+            characters.Remove(character);
+            serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+            }
+            catch(Exception ex )
+            {
+              serviceResponse.Success = false;
+              serviceResponse.Message = ex.Message;  
+            }
+
+            return serviceResponse;
         }
     }
 }
