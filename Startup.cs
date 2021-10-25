@@ -30,7 +30,7 @@ namespace dotnetRpg
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options =>
-            options.UseNpgsql(Configuration.GetConnectionString("DefualtConnection")));
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
