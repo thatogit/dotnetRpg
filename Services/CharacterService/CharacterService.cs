@@ -56,14 +56,16 @@ namespace dotnetRpg.Services.CharacterService
 
             try
             {
-                Character character = characters.FirstOrDefault(c => c.Id == updateCharacter.Id);
+                Character character =await _context.Characters.FirstOrDefaultAsync(c => c.Id == updateCharacter.Id);
 
                 character.Name = updateCharacter.Name;
                 character.HitPoints = updateCharacter.HitPoints;
                 character.Strenght = updateCharacter.Strenght;
                 character.Defense = updateCharacter.Defense;
                 character.Intelligence = updateCharacter.Intelligence;
-                character.Class = character.Class;
+                character.Class = updateCharacter.Class;
+
+                await _context.SaveChangesAsync();
 
                 serviceResponse.Data = _mapper.Map<GetCharacterDto>(character);
             }
@@ -83,9 +85,10 @@ namespace dotnetRpg.Services.CharacterService
 
             try
             {
-                Character character = characters.First(c => c.Id == id);
-                characters.Remove(character);
-                serviceResponse.Data = characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
+                Character character =await _context.Characters.FirstAsync(c => c.Id == id);
+                _context.Characters.Remove(character);
+                await _context.SaveChangesAsync();
+                serviceResponse.Data = _context.Characters.Select(c => _mapper.Map<GetCharacterDto>(c)).ToList();
             }
             catch (Exception ex)
             {
