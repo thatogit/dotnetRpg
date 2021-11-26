@@ -16,7 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
+    npm init
     npm install
     npm run build
-  workingDirectory: ls '/home/vsts/work/'
-  displayName: '${workingDirectory}'
+  displayName: '$(Build.SourcesDirectory)'
