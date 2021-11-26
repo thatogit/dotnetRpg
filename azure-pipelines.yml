@@ -18,4 +18,4 @@ steps:
 - script: |
     npm install
     npm run build
-  displayName: '$(Build.SourcesDirectory)'
+  displayName: 'ls $(Build.SourcesDirectory)/'
